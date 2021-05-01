@@ -22,7 +22,7 @@ setup(
     entry_points={
         'console_scripts': [
          'detection_node = person_detection.detection_node',
-         'person_remove = person_detection.person_remove:main',
+         'person_box = person_detection.person_box:main',
          'sync = person_detection.sync:main'
         ],
     },

@@ -89,7 +89,7 @@ def get_boxes(model, image_path):
   min_score_thresh = .5
   max_boxes_to_draw = boxes.shape[0]
 
-  person_boxes = [0]
+  person_boxes = [0,0,0,0]
   for i in range(min(max_boxes_to_draw, boxes.shape[0])):
     if scores is None or scores[i] > min_score_thresh:
       classes = output_dict['detection_classes'][i].astype(np.uint8)

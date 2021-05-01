@@ -14,16 +14,14 @@ from cv_bridge import CvBridge, CvBridgeError
 from rclpy.qos import qos_profile_sensor_data
 
 from sensor_msgs.msg import Image
-from std_msgs.msg import Float32MultiArray
+from box_msgs.msg import Box
 
 
 class MinimalSubscriber(Node):
 
     def __init__(self):
         super().__init__('minimal_subscriber')
-        self.publisher_ = self.create_publisher(Float32MultiArray, 'box_coordinates', 1)
-        timer_period = 0.5  # seconds
-        self.timer = self.create_timer(timer_period, self.detect_callback())
+        self.publisher_ = self.create_publisher(Box, 'box_coordinates', 1)
         self.subscription = self.create_subscription(Image,'camera/color/image_raw',  self.detect_callback, qos_profile_sensor_data)
         self.subscription  # prevent unused variable warning
         self.detection_model = load_model()
@@ -39,9 +37,18 @@ class MinimalSubscriber(Node):
 
         img = show_inference(self.detection_model, cv_image)        
         person_box = get_boxes(self.detection_model, cv_image)
-        #print (person_box)
+        #print (person_box[1])
 
-        box = Float32MultiArray(data=person_box)
+	
+        box = Box()
+        
+        t = self.get_clock().now()
+        box.header.stamp = t.to_msg()
+        box.l = float(person_box[0])
+        box.r = float(person_box[1])
+        box.t = float(person_box[2])
+        box.b = float(person_box[3])
+        
 
         self.publisher_.publish(box)
 
