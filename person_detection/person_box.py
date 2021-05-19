@@ -21,8 +21,8 @@ class MinimalSubscriber(Node):
 
     def __init__(self):
         super().__init__('minimal_subscriber')
-        self.publisher_ = self.create_publisher(Box, 'box_coordinates', 1)
-        self.subscription = self.create_subscription(Image,'camera/color/image_raw',  self.detect_callback, qos_profile_sensor_data)
+        self.publisher_ = self.create_publisher(Box, 'box_coordinates', 10)
+        self.subscription = self.create_subscription(Image,'serena/camera/right/color/image_raw',  self.detect_callback, qos_profile_sensor_data)
         self.subscription  # prevent unused variable warning
         self.detection_model = load_model()
         self.bridge = CvBridge()
@@ -43,7 +43,8 @@ class MinimalSubscriber(Node):
         box = Box()
         
         t = self.get_clock().now()
-        box.header.stamp = t.to_msg()
+        #box.header.stamp = t.to_msg()
+        box.header.stamp = msg.header.stamp
         box.l = float(person_box[0])
         box.r = float(person_box[1])
         box.t = float(person_box[2])
@@ -54,9 +55,9 @@ class MinimalSubscriber(Node):
 
 
         #Display the frames
-        #cv2.imshow('frame',cv_image)
-        #if cv2.waitKey(1) & 0xFF == ord('q'):
-        #    cv2.destroyAllWindows()
+        cv2.imshow('frame',img)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            cv2.destroyAllWindows()
             
 
 

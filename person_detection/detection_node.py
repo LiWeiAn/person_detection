@@ -49,7 +49,7 @@ def detection(model, image):
    
   # Handle models with masks:
   if 'detection_masks' in output_dict:
-    # Reframe the the bbox mask to the image size.
+    # Reframe the the bbox mask to the image size. (because the imput image is smaller(?))
     detection_masks_reframed = utils_ops.reframe_box_masks_to_image_masks(
               output_dict['detection_masks'], output_dict['detection_boxes'],
                image.shape[0], image.shape[1])      
