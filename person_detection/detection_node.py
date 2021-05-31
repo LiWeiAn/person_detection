@@ -1,3 +1,5 @@
+# Some of the code is by https://github.com/abhimanyu1990/SSD-Mobilenet-Custom-Object-Detector-Model-using-Tensorflow-2/blob/main/object_detection_tutorial.ipynb
+
 import numpy as np
 import os
 import pathlib
